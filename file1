@@ -1,0 +1,35 @@
+pipeline {
+  agent { label 'slavenode'}
+  stages {
+    stage('Create the dir') {
+     steps {
+	   sh 'mkdir /tmp/testdir'
+	 }
+    }
+	stage('Check java version') {
+	 steps {
+	  sh 'java -version'
+	 }
+	}
+	stage('System uptime information') {
+	 steps {
+	  sh 'uptime'
+	 }
+	}
+	stage('Find the public ip of instance') {
+	 steps {
+	  sh 'curl ifconfig.me'
+	 }
+	}
+	stage('find the root system') {
+	 steps {
+	  sh 'df -h'
+	 }
+	}
+	stage('display dir') {
+	 steps {
+	  sh 'ls -ltr'
+	 }
+	}
+  }
+}
