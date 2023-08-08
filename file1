@@ -1,11 +1,6 @@
 pipeline {
   agent { label 'slavenode'}
   stages {
-    stage('Create the dir') {
-     steps {
-	   sh 'mkdir /tmp/testdir'
-	 }
-    }
 	stage('Check java version') {
 	 steps {
 	  sh 'java -version'
