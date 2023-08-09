@@ -1,14 +1,16 @@
-pipline {
-  agent { lable 'slavenode'}
+pipeline {
+  agent { label 'slavenode'}
   triggers {
-    cron('h/2 * * * 1-5')
+    corn('h/2 * * * 1-5')
   }
-  stages{
-    stage('Examole') {
+  
+  stages {
+    stage('Example') {
 	  steps {
-	    echo 'Hello World'
-	  }
-	}
+	    echo 'Hello world'
+	  }	
+    }
   }
+
 }
 
