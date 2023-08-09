@@ -1,0 +1,52 @@
+pipeline {
+    agent { lable 'slavenode'}
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from version control
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build your application here
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Unit Test') {
+            steps {
+                // Run unit tests
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Integration Test') {
+            steps {
+                // Run integration tests
+                sh './run_integration_tests.sh'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy your application
+                sh './deploy.sh'
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Actions to perform when the pipeline succeeds
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            // Actions to perform when the pipeline fails
+            echo 'Pipeline failed!'
+        }
+    }
+}
+

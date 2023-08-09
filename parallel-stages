@@ -1,0 +1,58 @@
+pipeline {
+    agent { lable 'slavenode'}
+    
+    environment {
+        // Define environment variables
+        GIT_REPO = 'https://github.com/yourusername/yourrepo.git'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from GitHub
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: "${GIT_REPO}"]]])
+            }
+        }
+        
+        stage('Build and Test') {
+            parallel {
+                stage('Build') {
+                    steps {
+                        sh 'mvn clean package'
+                    }
+                }
+                
+                stage('Unit Tests') {
+                    steps {
+                        sh 'mvn test'
+                    }
+                }
+                
+                stage('Linting') {
+                    steps {
+                        sh 'npm install && npm run lint'
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                sh './deploy.sh'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
+

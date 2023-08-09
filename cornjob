@@ -1,0 +1,14 @@
+pipline {
+  agent { lable 'slavenode'}
+  triggers {
+    cron('h/2 * * * 1-5')
+  }
+  stages{
+    stage('Examole') {
+	  steps {
+	    echo 'Hello World'
+	  }
+	}
+  }
+}
+
